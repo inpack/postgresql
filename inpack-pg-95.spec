@@ -27,37 +27,7 @@ make -j4
 make install prefix={{.buildroot}}
 
 cd {{.buildroot}}
-strip -s bin/clusterdb
-strip -s bin/createdb
-strip -s bin/createlang
-strip -s bin/createuser
-strip -s bin/dropdb
-strip -s bin/droplang
-strip -s bin/dropuser
-strip -s bin/ecpg
-strip -s bin/initdb
-strip -s bin/pg_archivecleanup
-strip -s bin/pg_basebackup
-strip -s bin/pgbench
-strip -s bin/pg_config
-strip -s bin/pg_controldata
-strip -s bin/pg_ctl
-strip -s bin/pg_dump
-strip -s bin/pg_dumpall
-strip -s bin/pg_isready
-strip -s bin/pg_receivexlog
-strip -s bin/pg_recvlogical
-strip -s bin/pg_resetxlog
-strip -s bin/pg_restore
-strip -s bin/pg_rewind
-strip -s bin/pg_test_fsync
-strip -s bin/pg_test_timing
-strip -s bin/pg_upgrade
-strip -s bin/pg_xlogdump
-strip -s bin/postgres
-strip -s bin/psql
-strip -s bin/reindexdb
-strip -s bin/vacuumdb
+find bin/ -type f | xargs strip -s
 
 
 cd {{.inpack__pack_dir}}/deps
