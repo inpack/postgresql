@@ -114,7 +114,7 @@ func (cfg *EnvConfig) UserGet(name string) *EnvConfigUser {
 
 func main() {
 
-	if v, ok := hflag.Value("pg_rel"); ok && pg_rels.Has(v.String()) {
+	if v, ok := hflag.ValueOK("pg_rel"); ok && pg_rels.Has(v.String()) {
 		pg_rel = v.String()
 	}
 
@@ -171,17 +171,16 @@ func do() {
 		}
 
 		if inst.Spec == nil ||
-			len(inst.Spec.Boxes) == 0 ||
-			inst.Spec.Boxes[0].Resources == nil {
-			hlog.Print("error", "No Spec.Boxes Set")
+			inst.Spec.Box.Resources == nil {
+			hlog.Print("error", "No Spec.Box Set")
 			return
 		}
 
-		if inst.Spec.Boxes[0].Resources.MemLimit > 0 {
-			cfg_next.Resource.Ram = inst.Spec.Boxes[0].Resources.MemLimit
+		if inst.Spec.Box.Resources.MemLimit > 0 {
+			cfg_next.Resource.Ram = inst.Spec.Box.Resources.MemLimit
 		}
-		if inst.Spec.Boxes[0].Resources.CpuLimit > 0 {
-			cfg_next.Resource.Cpu = inst.Spec.Boxes[0].Resources.CpuLimit
+		if inst.Spec.Box.Resources.CpuLimit > 0 {
+			cfg_next.Resource.Cpu = inst.Spec.Box.Resources.CpuLimit
 		}
 	}
 

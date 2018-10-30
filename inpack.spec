@@ -1,6 +1,6 @@
 [project]
 name = postgresql-inner
-version = 0.9.1
+version = 0.9.2
 vendor = sysinner.com
 homepage = https://www.sysinner.com
 groups = dev/db
