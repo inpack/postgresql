@@ -1,6 +1,6 @@
 [project]
 name = postgresql10
-version = 10.5
+version = 10.7
 vendor = postgresql.org
 homepage = https://www.postgresql.org
 groups = dev/db
