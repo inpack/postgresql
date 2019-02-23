@@ -21,7 +21,7 @@ fi
 mkdir -p {{.buildroot}}/{bin,data,lib,share}
 
 cd postgresql-{{.project__version}}
-./configure --prefix={{.project__prefix}}
+./configure --prefix=/opt/postgresql/postgresql96
 
 make -j4
 make install prefix={{.buildroot}}
