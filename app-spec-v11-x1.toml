@@ -9,7 +9,7 @@ type_tags = ["database"]
 
 [[packages]]
   name = "postgresql11"
-  version = "11"
+  version = "11.9"
 
 [[packages]]
   name = "postgresql-keeper"
