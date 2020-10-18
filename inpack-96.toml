@@ -1,27 +1,33 @@
 [project]
-name = "postgresql96"
-version = "9.6.12"
-vendor = "postgresql.org"
-homepage = "https://www.postgresql.org"
-description = "advanced open source database"
-groups = ["dev/db"]
-
-[files]
+  name = "postgresql96"
+  version = "9.6.19"
+  vendor = "postgresql.org"
+  homepage = "https://www.postgresql.org"
+  description = "advanced open source database"
+  groups = ["dev/db"]
 
 [scripts]
-build = """cd {{.inpack__pack_dir}}/deps
-if [ ! -f \"postgresql-{{.project__version}}.tar.bz2\" ]; then
+  build = """
+cd {{.inpack__pack_dir}}/deps
+
+if [ ! -f "postgresql-{{.project__version}}.tar.bz2" ]; then
     wget https://ftp.postgresql.org/pub/source/v{{.project__version}}/postgresql-{{.project__version}}.tar.bz2
 fi
-if [ ! -d \"postgresql-{{.project__version}}\" ]; then
+
+if [ ! -d "postgresql-{{.project__version}}" ]; then
     tar -vxjf postgresql-{{.project__version}}.tar.bz2
 fi
+
 mkdir -p {{.buildroot}}/{bin,data,lib,share}
+
 cd postgresql-{{.project__version}}
 ./configure --prefix=/opt/postgresql/postgresql96
 make -j4
+
 make install prefix={{.buildroot}}
+
 cd {{.buildroot}}
+
 find bin/ -type f | xargs strip -s
 cd {{.inpack__pack_dir}}/deps
 rm -rf postgresql-{{.project__version}}
