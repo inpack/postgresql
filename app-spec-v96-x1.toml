@@ -1,0 +1,88 @@
+kind = "AppSpec"
+roles = [101, 100]
+type_tags = ["database"]
+
+[meta]
+  id = "sysinner-pgsql-x1"
+  name = "PostgreSQL x1"
+  version = "1.0"
+
+[[packages]]
+  name = "postgresql96"
+  version = "9.6"
+
+[[packages]]
+  name = "postgresql-keeper"
+  version = "0.10"
+
+[[executors]]
+  name = "sysinner-pgsql-x1"
+  exec_start = """
+if pidof postgresql-keeper; then
+    exit 0
+fi
+
+mkdir -p /opt/postgresql/postgresql96/
+rsync -av {{.inpack_prefix_postgresql96}}/* /opt/postgresql/postgresql96/
+
+mkdir -p /opt/postgresql/keeper/
+rsync -av {{.inpack_prefix_postgresql_keeper}}/* /opt/postgresql/keeper/
+
+/opt/postgresql/keeper/bin/postgresql-keeper -log_dir=/opt/postgresql/keeper/log -minloglevel=1 -logtolevels=true > /dev/null 2>&1 &
+"""
+
+  exec_stop = "killall postgresql-keeper\nkillall postgres"
+  priority = 4
+
+  [executors.plan]
+    on_tick = 60
+
+[[service_ports]]
+  name = "pgsql"
+  box_port = 5432
+
+[configurator]
+  name = "cfg/sysinner-pgsql"
+
+  [[configurator.fields]]
+    name = "db_name"
+    title = "Database Name"
+    type = 1
+    default = "dbaction"
+    auto_fill = "defval"
+
+  [[configurator.fields]]
+    name = "db_auth"
+    title = "Database Password"
+    type = 1
+    auto_fill = "hexstr_32"
+
+  [[configurator.fields]]
+    name = "db_user"
+    title = "Database User"
+    type = 1
+    default = "dbuser"
+    auto_fill = "defval"
+
+  [[configurator.fields]]
+    name = "memory_usage_limit"
+    title = "Memory Usage In Percentage"
+    prompt = "Range in 10 ~ 100"
+    type = 1
+    default = "20"
+    description = "will allocating 10% ~ 100% Memory Size to this Instance"
+
+[exp_res]
+  cpu_min = 2
+  mem_min = 128
+  vol_min = 1
+
+[exp_deploy]
+  rep_min = 1
+  rep_max = 1
+  sys_state = 2
+  network_mode = 1
+
+[[urls]]
+  name = "gdoc"
+  url = "https://www.sysinner.cn/gdoc/view/app-guide/postgresql/v96-x1.md"
